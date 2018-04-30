@@ -1,0 +1,20 @@
+{
+  "name": "neightborhood-map",
+  "version": "1.0.0",
+  "description": "Neighborhood Map that gives information about a particular area",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "google",
+    "maps",
+    "knockout",
+    "js"
+  ],
+  "author": "Pranav Jain",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.1"
+  }
+}
