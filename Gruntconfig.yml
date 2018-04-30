@@ -1,0 +1,11 @@
+cssDir: src/css/
+mincssDir: dist/css/
+
+srcDir: src/
+distDir: dist/
+
+jsDir: src/js
+minjsDir: dist/js
+
+imgDir: src/img
+imgDestDir: dist/img
