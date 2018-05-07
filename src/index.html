@@ -8,9 +8,47 @@
     <title>Neighborhood Map</title>
   </head>
   <body>
-    
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <form>
+            <div class="form-row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Filter">
+              </div>
+            </div>
+          </form>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Active</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+          </ul>
+        </div>
+        <div class="col" id="map">
+
+
+        </div>
+      </div>
+    </div>
     <script src="js/knockout-3.4.2.js"></script>
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/app.js"></script>
+    <script async defer
+        src=
+        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8&v=3&callback=app.initMap">
+    </script>
+
+
+
   </body>
 </html>
