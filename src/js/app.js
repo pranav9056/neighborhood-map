@@ -9,10 +9,13 @@ function getLatLngFromAdd(add){
 }
 
 (function(){
+
   app.mapDiv = document.getElementById('map');
   app.homeAdd = "1215 Broadway Astoria";
   var position = {lat:40.7668153 ,lng:-73.9341451};
+
   app.initMap = function(){
+
     app.map = new google.maps.Map(this.mapDiv, {
       center: position,
       zoom: 14,
@@ -26,30 +29,30 @@ function getLatLngFromAdd(add){
       animation: google.maps.Animation.DROP,
       id: 1
     });
+
     app.service = new google.maps.places.PlacesService(app.map);
     app.service.nearbySearch({
       location: position,
       radius: '1000',
       type: ['restaurant']
-    }, function(results,status){
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        app.restaurantData = results;
-        ko.applyBindings(new app.viewModel());
-
-      }
-
-
-    });
-
-
-
+    }, app.viewModelObject.loadPlaces)
   };
 
   app.viewModel = function(){
     var self = this;
-    self.places = ko.observableArray(app.restaurantData);
-
+    self.places = ko.observableArray();
+    self.loadPlaces = function(results,status){
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          results.forEach(function(place){
+            self.places.push(place);
+          });
+        }
+    }
   }
+
+  app.viewModelObject = new app.viewModel()
+  ko.applyBindings(app.viewModelObject);
+
 
 
 
