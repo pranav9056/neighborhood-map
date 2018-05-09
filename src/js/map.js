@@ -24,6 +24,7 @@ function getLatLngFromAdd(add){
     app.position = {lat:40.7668153 ,lng:-73.9341451};
     app.homeAdd = "1215 Broadway Astoria";
     app.infowindow = new google.maps.InfoWindow();
+    app.bounds = new google.maps.LatLngBounds();
     app.map = new google.maps.Map(app.mapDiv, {
       center: app.position,
       zoom: 14,
@@ -44,4 +45,41 @@ function getLatLngFromAdd(add){
 
 
   };
+  app.populateInfoWindow = function(marker) {
+  if (app.infowindow.marker != marker) {
+    app.infowindow.setContent('');
+    app.infowindow.marker = marker;
+    app.infowindow.addListener('closeclick', function() {
+      app.infowindow.marker = null;
+    });
+    var streetViewService = new google.maps.StreetViewService();
+    var radius = 50;
+    function getStreetView(data, status) {
+      if (status == google.maps.StreetViewStatus.OK) {
+        var nearStreetViewLocation = data.location.latLng;
+        var heading = google.maps.geometry.spherical.computeHeading(
+          nearStreetViewLocation, marker.position);
+
+          var card = '<div id="pano" class="card-img-top" alt="Card image cap"></div><div class="card-body"> <h5 class="card-title">'+ marker.title+'</h5></div>';
+          app.infowindow.setContent(card);
+          var panoramaOptions = {
+            position: nearStreetViewLocation,
+            pov: {
+              heading: heading,
+              pitch: 0
+            }
+          };
+        var panorama = new google.maps.StreetViewPanorama(
+          document.getElementById('pano'), panoramaOptions);
+      } else {
+        console.log("ddd");
+        app.infowindow.setContent('<div>' + marker.title + '</div>' +
+          '<div>No Street View Found</div>');
+      }
+    }
+    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+    app.infowindow.open(app.map, marker);
+  }
+}
+
 })();
