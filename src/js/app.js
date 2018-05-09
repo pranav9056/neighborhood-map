@@ -15,8 +15,24 @@ var app = app || {};
         results.forEach(function(place){
           self.places.push(place);
         });
+        self.createMarkers();
       }
     }
+    self.createMarkers = function(){
+      self.places().forEach(function(place){
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: app.map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          app.infowindow.setContent(place.name);
+          app.infowindow.open(app.map, this);
+        });
+      })
+    }
+
   }
 
   app.viewModelObject = new app.viewModel()

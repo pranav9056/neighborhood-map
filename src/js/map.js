@@ -23,7 +23,7 @@ function getLatLngFromAdd(add){
     app.mapDiv = document.getElementById('map');
     app.position = {lat:40.7668153 ,lng:-73.9341451};
     app.homeAdd = "1215 Broadway Astoria";
-
+    app.infowindow = new google.maps.InfoWindow();
     app.map = new google.maps.Map(app.mapDiv, {
       center: app.position,
       zoom: 14,
