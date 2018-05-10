@@ -6,6 +6,18 @@ var app = app || {};
 //var position = {lat:40.7668153 ,lng:-73.9341451};
 
 (function(){
+  var Establishment = function(data){
+    var name = data.name;
+    var address = data.vicinity;
+    var icon = data.icon;
+    var position = data.geometry.location;
+  }
+  //
+  var CategoryType = function(category,results){
+    var category = category;
+    var establishments = [];
+    var displayEstablishments = ko.observableArray();
+  }
   app.viewModel = function(){
     var self = this;
     self.homeAdd = ko.observable("1215 Broadway Astoria");
@@ -13,6 +25,7 @@ var app = app || {};
     self.markers = [];
     self.loadPlaces = function(results,status){
       if (status == google.maps.places.PlacesServiceStatus.OK) {
+        console.log(results);
         results.forEach(function(place){
           self.places.push(place);
         });
