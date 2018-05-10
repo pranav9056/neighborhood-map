@@ -49,7 +49,9 @@ var app = app || {};
     self.homeAdd = ko.observable("1215 Broadway Astoria");
     self.places = ko.observableArray();
     self.markers = [];
-    self.loadPlaces = function(results,status){
+
+    // old view model functions called when new data arrives
+    self.loadPlaces = function(results,status,category){
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         console.log(results);
         results.forEach(function(place){
@@ -86,8 +88,27 @@ var app = app || {};
     }
 
 
-    // modified view model starts from here 
+    // modified view model starts from here
+    // figure out how to store categries
+    self.categories = ko.observableArray();
+    self.categoryObjects = [];
+    self.displayCategories = ko.observableArray();
 
+  }
+  app.viewModel.prototype.addNewCategory = function(results,status,category){
+    var self = this;
+    // Check If Information is recieved properly
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      // figure out how to get category
+      var newCategory = new CategoryType(category,results);
+      self.categories.push(category);
+      self.categoryObjects.push(newCategory);
+      self.displayCategories.push(newCategory);
+    }
+    // handle case of failure later
+    else{
+
+    }
   }
 
   app.viewModelObject = new app.viewModel()

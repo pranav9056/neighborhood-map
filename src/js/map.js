@@ -14,7 +14,12 @@ function getLatLngFromAdd(add){
       radius: '1000',
       type: category
     }
-    app.service.nearbySearch(options, app.viewModelObject.loadPlaces);
+    app.service.nearbySearch(options,function(results,status){
+      // old way of handling incoming data
+      app.viewModelObject.loadPlaces(results,status,category[0]);
+      // new way of handling incoming data
+      //app.viewModelObject.addNewCategory(results,status,category[0]);
+    });
 
   }
 
@@ -41,10 +46,14 @@ function getLatLngFromAdd(add){
       id: 1
     });
 
+    app.categories = ['restaurant','gas-station','laundry','atm'];
+
     app.getPlaces(['restaurant']);
 
 
   };
+
+  // earlier way of loading infowindow content
   app.populateInfoWindow = function(marker) {
   if (app.infowindow.marker != marker) {
     app.infowindow.setContent('');
