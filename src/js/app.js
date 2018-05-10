@@ -6,17 +6,35 @@ var app = app || {};
 //var position = {lat:40.7668153 ,lng:-73.9341451};
 
 (function(){
+
+  // Create a new object for each place near the Neighborhood which manages properties of the ,
   var Establishment = function(data){
-    var name = data.name;
-    var address = data.vicinity;
-    var icon = data.icon;
-    var position = data.geometry.location;
+    this.name = data.name;
+    this.address = data.vicinity;
+    this.icon = data.icon;
+    this.position = data.geometry.location;
+  }
+  Establishment.prototype.createMarker = function(){
+    var options = {
+      map: app.map,
+      position: this.position,
+      icon: this.icon,
+      title: this.name,
+    };
+    this.marker = new google.maps.Marker(options);
+    // add event listener to the marker later !
+  }
+  Establishment.prototype.showMarker(){
+    this.marker.setMap(app.map);
+  }
+  Establishment.prototype.hideMarker(){
+    this.marker.setMap(null);
   }
   //
   var CategoryType = function(category,results){
-    var category = category;
-    var establishments = [];
-    var displayEstablishments = ko.observableArray();
+    this.category = category;
+    this.establishments = [];
+    this.displayEstablishments = ko.observableArray();
   }
   app.viewModel = function(){
     var self = this;
