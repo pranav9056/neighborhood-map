@@ -24,18 +24,26 @@ var app = app || {};
     this.marker = new google.maps.Marker(options);
     // add event listener to the marker later !
   }
-  Establishment.prototype.showMarker(){
+  Establishment.prototype.showMarker = function(){
     this.marker.setMap(app.map);
   }
-  Establishment.prototype.hideMarker(){
+  Establishment.prototype.hideMarker = function(){
     this.marker.setMap(null);
   }
   //
   var CategoryType = function(category,results){
+    var self = this;
     this.category = category;
     this.establishments = [];
     this.displayEstablishments = ko.observableArray();
+    results.forEach(function(place){
+      var establishment = new Establishment(place);
+      self.establishments.push(establishment);
+      self.displayEstablishments.push(establishment);
+    });
   }
+
+  // View Model
   app.viewModel = function(){
     var self = this;
     self.homeAdd = ko.observable("1215 Broadway Astoria");
@@ -77,8 +85,13 @@ var app = app || {};
       app.map.fitBounds(app.bounds);
     }
 
+
+    // modified view model starts from here 
+
   }
 
   app.viewModelObject = new app.viewModel()
   ko.applyBindings(app.viewModelObject);
+
+
 })();
