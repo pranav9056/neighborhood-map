@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/master.css">
-    <title>Neighborhood Map</title>
-  </head>
-  <body>
-    <div class="container-fluid h-100">
-      <div class="row h-100">
-        <div class="col-lg-3 col-md-3 col">
-          <form>
-            <div class="form-row">
-              <div class="col">
-                <input type="text" class="form-control" placeholder="Filter">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/master.css">
+  <title>Neighborhood Map</title>
+</head>
+<body>
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-lg-3 col-md-3 col">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filters
+          </button>
+          <div class="dropdown-menu">
+            <form class="px-4 py-3" data-bind="foreach: categories">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" data-bind="attr: {'id': 'checkbox_'+$index()}" checked>
+                <label class="form-check-label" data-bind="text:$data, attr: {'for': 'checkbox_' + $index()}">
+                </label>
               </div>
-            </div>
-          </form>
-          <ul class="nav flex-column" data-bind="foreach: displayCategories">
-            <!-- ko foreach: displayEstablishments -->
-            <li data-bind="text:$data.name" class="nav-item"></li>
-            <!-- /ko -->
-          </ul>
-        </div>
-        <div class="col-lg-9 col-md-9 col" id="map">
-
+            </form>
+          </div>
 
         </div>
+        <ul class="nav flex-column" data-bind="foreach: displayCategories">
+          <!-- ko foreach: displayEstablishments -->
+          <li data-bind="text:$data.name" class="nav-item"></li>
+          <!-- /ko -->
+        </ul>
+      </div>
+      <div class="col-lg-9 col-md-9 col" id="map">
+
+
       </div>
     </div>
-    <script src="js/knockout-3.4.2.js"></script>
-    <script src="js/jquery-3.3.1.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script async defer
-        src=
-        "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8&v=3&callback=app.initMap">
-    </script>
-    <script src="js/map.js"></script>
-    <script src="js/app.js"></script>
+  </div>
+  <script src="js/knockout-3.4.2.js"></script>
+  <script src="js/jquery-3.3.1.js"></script>
+  <script src="js/bootstrap.bundle.js"></script>
+  <script async defer
+  src=
+  "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8&v=3&callback=app.initMap">
+  </script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
 
 
 
 
 
-  </body>
+</body>
 </html>

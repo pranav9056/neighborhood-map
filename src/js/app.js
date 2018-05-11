@@ -99,7 +99,6 @@ var app = app || {};
     var self = this;
     // Check If Information is recieved properly
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      // figure out how to get category
       var newCategory = new CategoryType(category,results);
       self.categories.push(category);
       self.categoryObjects.push(newCategory);
