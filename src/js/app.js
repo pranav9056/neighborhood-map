@@ -29,6 +29,14 @@ var app = app || {};
   Establishment.prototype.hideMarker = function(){
     this.marker.setMap(null);
   }
+  Establishment.prototype.toggleMarker = function(){
+    if (this.marker.getMap()==null){
+      this.showMarker();
+    }
+    else {
+      this.hideMarker();
+    }
+  }
   //
   var CategoryType = function(category,results){
     var self = this;
@@ -40,6 +48,11 @@ var app = app || {};
       establishment.createMarker();
       self.establishments.push(establishment);
       self.displayEstablishments.push(establishment);
+    });
+  }
+  CategoryType.prototype.toggleCategory = function(){
+    this.establishments.forEach(function(establishment){
+      establishment.toggleMarker();
     });
   }
 
@@ -90,9 +103,21 @@ var app = app || {};
 
     // modified view model starts from here
     // figure out how to store categries
+    // may want to remove categories
     self.categories = ko.observableArray();
-    self.categoryObjects = [];
+    self.categoryObjects = ko.observableArray();
     self.displayCategories = ko.observableArray();
+
+    self.applyFilter = function(data,clickEvent){
+      var removeCategory = self.displayCategories.remove(function(item){
+        return item.category == data.category;
+      });
+      if(removeCategory.length == 0){
+        self.displayCategories.push(data);
+      }
+      data.toggleCategory();
+      return true;
+    }
 
   }
   app.viewModel.prototype.addNewCategory = function(results,status,category){
@@ -109,6 +134,7 @@ var app = app || {};
 
     }
   }
+
 
   app.viewModelObject = new app.viewModel()
   ko.applyBindings(app.viewModelObject);

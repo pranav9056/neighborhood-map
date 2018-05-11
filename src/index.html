@@ -15,11 +15,11 @@
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Filters
           </button>
-          <div class="dropdown-menu">
-            <form class="px-4 py-3" data-bind="foreach: categories">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" data-bind="attr: {'id': 'checkbox_'+$index()}" checked>
-                <label class="form-check-label" data-bind="text:$data, attr: {'for': 'checkbox_' + $index()}">
+          <div class="dropdown-menu bg-light">
+            <form class="px-4 py-3" data-bind="foreach: categoryObjects">
+              <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" value="" data-bind="attr: {'id': 'checkbox_'+$index()}" checked>
+                <label class="custom-control-label" data-bind="text:$data.category, attr: {'for': 'checkbox_' + $index()},click:$parent.applyFilter">
                 </label>
               </div>
             </form>
