@@ -16,9 +16,9 @@ function getLatLngFromAdd(add){
     }
     app.service.nearbySearch(options,function(results,status){
       // old way of handling incoming data
-      app.viewModelObject.loadPlaces(results,status,category[0]);
+    //  app.viewModelObject.loadPlaces(results,status,category[0]);
       // new way of handling incoming data
-      //app.viewModelObject.addNewCategory(results,status,category[0]);
+      app.viewModelObject.addNewCategory(results,status,category[0]);
     });
 
   }
@@ -47,8 +47,10 @@ function getLatLngFromAdd(add){
     });
 
     app.categories = ['restaurant','gas-station','laundry','atm'];
-
-    app.getPlaces(['restaurant']);
+    app.categories.forEach(function(category){
+      app.getPlaces([category]);
+    });
+    //app.getPlaces(['restaurant']);
 
 
   };

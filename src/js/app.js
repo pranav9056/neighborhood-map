@@ -18,7 +18,6 @@ var app = app || {};
     var options = {
       map: app.map,
       position: this.position,
-      icon: this.icon,
       title: this.name,
     };
     this.marker = new google.maps.Marker(options);
@@ -38,6 +37,7 @@ var app = app || {};
     this.displayEstablishments = ko.observableArray();
     results.forEach(function(place){
       var establishment = new Establishment(place);
+      establishment.createMarker();
       self.establishments.push(establishment);
       self.displayEstablishments.push(establishment);
     });

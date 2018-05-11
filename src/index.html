@@ -18,8 +18,10 @@
               </div>
             </div>
           </form>
-          <ul class="nav flex-column" data-bind="foreach: places">
+          <ul class="nav flex-column" data-bind="foreach: displayCategories">
+            <!-- ko foreach: displayEstablishments -->
             <li data-bind="text:$data.name" class="nav-item"></li>
+            <!-- /ko -->
           </ul>
         </div>
         <div class="col-lg-9 col-md-9 col" id="map">
