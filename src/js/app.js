@@ -90,9 +90,11 @@ var app = app || {};
           });
         }
         else{
-          $('#address').html('<i class="fas fa-location-arrow"></i>  '+self.vicinity);
+          if(self.vicinity != undefined){
+            $('#address').html('<i class="fas fa-location-arrow"></i>  '+self.vicinity);
+          }
           if(self.rating != undefined){
-            $('#rating').html('<i class="far fa-star"></i>  ' +self.rating+"/5" ;
+            $('#rating').html('<i class="far fa-star"></i>  ' +self.rating+"/5") ;
           }
         }
       });
@@ -124,45 +126,6 @@ var app = app || {};
   app.viewModel = function(){
     var self = this;
     self.homeAdd = ko.observable("1215 Broadway Astoria");
-    self.places = ko.observableArray();
-    self.markers = [];
-
-    // old view model functions called when new data arrives
-    self.loadPlaces = function(results,status,category){
-      if (status == google.maps.places.PlacesServiceStatus.OK) {
-        results.forEach(function(place){
-          self.places.push(place);
-        });
-        self.createMarkers();
-      }
-    }
-
-    self.createMarkers = function(){
-      self.places().forEach(function(place){
-        var placeLoc = place.geometry.location;
-        var marker = new google.maps.Marker({
-          map: app.map,
-          position: place.geometry.location,
-          title: place.name,
-
-        });
-        app.bounds.extend(marker.position);
-        self.markers.push(marker);
-
-        marker.addListener( 'click', function() {
-          //var card =  '<div class="card-body"><h5 class="card-title">%name%</h5><h6 class="card-subtitle mb-2 text-muted">%address%</h6><a href="#" class="card-link">Card link</a><a href="#" class="card-link">Another link</a></div>';
-          //card = card.replace("%name%",place.name);
-          //card = card.replace("%address%",place.vicinity);
-          //console.log(place);
-          //app.infowindow.setContent(card);
-
-          app.populateInfoWindow(this);
-          //app.infowindow.open(app.map, this);
-        });
-      })
-      app.map.fitBounds(app.bounds);
-    }
-
 
     // modified view model starts from here
     // figure out how to store categries

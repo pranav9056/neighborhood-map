@@ -49,47 +49,7 @@ function getLatLngFromAdd(add){
     app.categories.forEach(function(category){
       app.getPlaces([category]);
     });
-    //app.getPlaces(['restaurant']);
 
 
   };
-
-  // earlier way of loading infoWindow content
-  app.populateInfoWindow = function(marker) {
-  if (app.infoWindow.marker != marker) {
-    app.infoWindow.setContent('');
-    app.infoWindow.marker = marker;
-    app.infoWindow.addListener('closeclick', function() {
-      app.infoWindow.marker = null;
-    });
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 50;
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-
-          var card = '<div id="pano" class="card-img-top" alt="Card image cap"></div><div class="card-body"> <h5 class="card-title">'+ marker.title+'</h5></div>';
-          app.infoWindow.setContent(card);
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 0
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-      } else {
-        console.log("ddd");
-        app.infoWindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    app.infoWindow.open(app.map, marker);
-  }
-}
-
 })();
