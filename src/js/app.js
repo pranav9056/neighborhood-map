@@ -13,6 +13,7 @@ var app = app || {};
     this.address = data.vicinity;
     this.icon = data.icon;
     this.position = data.geometry.location;
+    this.ratingGoogle = data.rating;
   }
   Establishment.prototype.createMarker = function(){
     var self = this;
@@ -41,7 +42,7 @@ var app = app || {};
       this.hideMarker();
     }
   }
-  Establishment.prototype.populateInfoWindow = function(){
+  Establishment.prototype.populateInfoWindow = function(data,clickEvent){
     var self = this;
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){
@@ -55,7 +56,47 @@ var app = app || {};
         app.infoWindow.marker = null;
       });
       // setting content
-      app.infoWindow.setContent(self.name)
+      // ajax requests
+      var clientID = "XG52FAWOMRPKNTOYZSQ4QNPVLTKDOGZDJQR0ROEX0LELNDMQ";
+      var clientSecret = "3Z5ZEE44NI5JOPG5A5SPKRBSTTBYRVO4AU4QRY1YYVAFRWY4";
+      var content = '<div><div id="name">'+self.name+'</div><div id="rating"></div><div id="address"></div><div id="phone"></div><div id="hours"></div><div id="url"></div></div>';
+      app.infoWindow.setContent(content);
+      var url = "https://api.foursquare.com/v2/venues/search?v=20180512&ll=";
+      url = url + self.position.lat() + "," + self.position.lng();
+      url = url +"&intent=match&name=" + self.name;
+      url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
+      $.getJSON(url,function(data){
+        console.log(data);
+        if(data.meta.code == 200 && data.response.venues.length >0){
+          self.foursquareId = data.response.venues[0].id;
+          var url = "https://api.foursquare.com/v2/venues/"+self.foursquareId+"?v=20180512&";
+          url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
+          $.getJSON(url,function(data){
+            console.log(data);
+            var venue = data.response.venue;
+            $('#address').html('<i class="fas fa-location-arrow"></i>  '+venue.location.formattedAddress[0]);
+            if(venue.contact.formattedPhone != undefined){
+              $('#phone').html('<i class="fas fa-phone"></i>  '+venue.contact.formattedPhone);
+            }
+            if(venue.rating != undefined){
+              $('#rating').html('<i class="far fa-star"></i>  ' +venue.rating+"/10" +"    " +'<i class="far fa-thumbs-up"></i>  '+venue.likes.count);
+            }
+            if(venue.hours != undefined){
+              $('#hours').html('<i class="fas fa-clock"></i>  '+ venue.hours.status)
+            }
+            if(venue.url != undefined){
+              $('#url').html('<i class="fas fa-external-link-square-alt"></i> '+ '<a target="_new" href="'+venue.url+'">'+venue.url+'</a>');
+            }
+          });
+        }
+        else{
+          $('#address').html('<i class="fas fa-location-arrow"></i>  '+self.vicinity);
+          if(self.rating != undefined){
+            $('#rating').html('<i class="far fa-star"></i>  ' +self.rating+"/5" ;
+          }
+        }
+      });
+
       app.infoWindow.open(app.map, self.marker);
 
     }

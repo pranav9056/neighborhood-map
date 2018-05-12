@@ -7,7 +7,6 @@ function getLatLngFromAdd(add){
   } );
 }
 (function(){
-
   app.getPlaces = function(category){
     var options = {
       location: app.position,
