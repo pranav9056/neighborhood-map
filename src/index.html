@@ -28,7 +28,7 @@
         </div>
         <ul class="nav flex-column" data-bind="foreach: displayCategories">
           <!-- ko foreach: displayEstablishments -->
-          <li data-bind="text:$data.name" class="nav-item"></li>
+          <li data-bind="text:$data.name,click:populateInfoWindow" class="nav-item"></li>
           <!-- /ko -->
         </ul>
       </div>
