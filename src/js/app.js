@@ -43,6 +43,10 @@ var app = app || {};
   }
   Establishment.prototype.populateInfoWindow = function(){
     var self = this;
+    self.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      self.marker.setAnimation(null);
+    },1000);
     if (app.infoWindow.marker != self.marker){
       //
       app.infoWindow.setContent('');
