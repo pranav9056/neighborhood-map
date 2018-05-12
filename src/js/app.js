@@ -15,6 +15,7 @@ var app = app || {};
     this.position = data.geometry.location;
   }
   Establishment.prototype.createMarker = function(){
+    var self = this;
     var options = {
       map: app.map,
       position: this.position,
@@ -22,6 +23,9 @@ var app = app || {};
     };
     this.marker = new google.maps.Marker(options);
     // add event listener to the marker later !
+    this.marker.addListener('click', function() {
+      self.populateInfoWindow();
+    });
   }
   Establishment.prototype.showMarker = function(){
     this.marker.setMap(app.map);
@@ -35,6 +39,21 @@ var app = app || {};
     }
     else {
       this.hideMarker();
+    }
+  }
+  Establishment.prototype.populateInfoWindow = function(){
+    var self = this;
+    if (app.infoWindow.marker != self.marker){
+      //
+      app.infoWindow.setContent('');
+      app.infoWindow.marker = self.marker;
+      app.infoWindow.addListener('closeclick', function() {
+        app.infoWindow.marker = null;
+      });
+      // setting content
+      app.infoWindow.setContent(self.name)
+      app.infoWindow.open(app.map, self.marker);
+
     }
   }
   //
@@ -66,7 +85,6 @@ var app = app || {};
     // old view model functions called when new data arrives
     self.loadPlaces = function(results,status,category){
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        console.log(results);
         results.forEach(function(place){
           self.places.push(place);
         });

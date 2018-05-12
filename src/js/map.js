@@ -28,7 +28,7 @@ function getLatLngFromAdd(add){
     app.mapDiv = document.getElementById('map');
     app.position = {lat:40.7668153 ,lng:-73.9341451};
     app.homeAdd = "1215 Broadway Astoria";
-    app.infowindow = new google.maps.InfoWindow();
+    app.infoWindow = new google.maps.InfoWindow();
     app.bounds = new google.maps.LatLngBounds();
     app.map = new google.maps.Map(app.mapDiv, {
       center: app.position,
@@ -55,13 +55,13 @@ function getLatLngFromAdd(add){
 
   };
 
-  // earlier way of loading infowindow content
+  // earlier way of loading infoWindow content
   app.populateInfoWindow = function(marker) {
-  if (app.infowindow.marker != marker) {
-    app.infowindow.setContent('');
-    app.infowindow.marker = marker;
-    app.infowindow.addListener('closeclick', function() {
-      app.infowindow.marker = null;
+  if (app.infoWindow.marker != marker) {
+    app.infoWindow.setContent('');
+    app.infoWindow.marker = marker;
+    app.infoWindow.addListener('closeclick', function() {
+      app.infoWindow.marker = null;
     });
     var streetViewService = new google.maps.StreetViewService();
     var radius = 50;
@@ -72,7 +72,7 @@ function getLatLngFromAdd(add){
           nearStreetViewLocation, marker.position);
 
           var card = '<div id="pano" class="card-img-top" alt="Card image cap"></div><div class="card-body"> <h5 class="card-title">'+ marker.title+'</h5></div>';
-          app.infowindow.setContent(card);
+          app.infoWindow.setContent(card);
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
@@ -84,12 +84,12 @@ function getLatLngFromAdd(add){
           document.getElementById('pano'), panoramaOptions);
       } else {
         console.log("ddd");
-        app.infowindow.setContent('<div>' + marker.title + '</div>' +
+        app.infoWindow.setContent('<div>' + marker.title + '</div>' +
           '<div>No Street View Found</div>');
       }
     }
     streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    app.infowindow.open(app.map, marker);
+    app.infoWindow.open(app.map, marker);
   }
 }
 
