@@ -9,7 +9,7 @@
   <title>Neighborhood Map</title>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
     <span class="navbar-brand mr-auto mr-lg-0" href="#">Neighborhood Map</span>
     <button class="navbar-toggler p-0 border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -17,8 +17,8 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto mr-3">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Favorites</a>
+        <li class="nav-item d-xl-none">
+          <a class="nav-link btn-secondary btn" data-toggle="offcanvas" href="#"><i class="fas fa-list-ul"></i></a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,14 +45,14 @@
 
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <div class="col-lg-3 col-md-3 col ff">
-        <ul class="nav " data-bind="foreach: displayCategories">
+      <div class="navbar-collapse offcanvas-collapse col-xl-3 col-sm-3 col-12 d-none d-xl-flex">
+        <ul class="nav flex-column" data-bind="foreach: displayCategories">
           <!-- ko foreach: displayEstablishments -->
           <li data-bind="text:$data.name,click:populateInfoWindow" class="nav-item"></li>
           <!-- /ko -->
         </ul>
       </div>
-      <div class="col-lg-9 col-md-9 col" id="map">
+      <div class="col-xl-9  col-12" id="map">
 
 
       </div>
