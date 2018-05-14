@@ -52,7 +52,6 @@ var app = app || {};
       $('#rating').html('<i class="far fa-star"></i>  ' +self.ratingGoogle+"/5") ;
     }
     $('.gdata').toggleClass('d-none');
-    app.infoWindow.open(app.map, self.marker);
 
 
   }
@@ -81,11 +80,13 @@ var app = app || {};
       url = url +"&intent=match&name=" + self.name;
       url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
       $.getJSON(url,function(data){
+        console.log(1);
         if(data.meta.code == 200 && data.response.venues.length >0){
           self.foursquareId = data.response.venues[0].id;
           var url = "https://api.foursquare.com/v2/venues/"+self.foursquareId+"?v=20180512&";
           url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
           $.getJSON(url,function(data){
+            console.log(data);
             var venue = data.response.venue;
             $('#address').html('<i class="fas fa-location-arrow"></i>  '+venue.location.formattedAddress[0]);
             if(venue.contact.formattedPhone != undefined){
@@ -100,17 +101,21 @@ var app = app || {};
             if(venue.url != undefined){
               $('#url').html('<i class="fas fa-external-link-square-alt"></i> '+ '<a target="_new" href="'+venue.url+'">'+venue.url+'</a>');
             }
-            app.infoWindow.open(app.map, self.marker);
           }).fail(function(){
+            console.log(3);
             self.useGoogleData();
           });
         }
         else{
+          console.log(4);
           self.useGoogleData();
         }
       }).fail(function(){
+        console.log(5);
         self.useGoogleData()
       });
+      app.infoWindow.open(app.map, self.marker);
+
 
 
     }
