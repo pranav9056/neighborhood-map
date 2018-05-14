@@ -36,7 +36,7 @@
 				<div class="accordion w-100" data-bind="foreach: displayCategories" id="accordionExample">
 					<div class="card bg-dark">
 						<div class="card-header" data-bind="attr: {'id': 'heading_'+$index()}">
-							<h5 class="mb-0 d-flex justify-content-center"><span aria-expanded="true" class="btn btn-outline-light w-100" data-bind="text:$data.category,attr:{'data-target':'#collapse_'+$index(),'aria-controls':'collapse_'+$index()}" data-toggle="collapse"></span></h5>
+							<h5 class="mb-0 d-flex justify-content-center"><span aria-expanded="true" class="btn btn-outline-light w-100" data-bind="text:$data.category,attr:{'data-target':'#collapse_'+$index(),'aria-controls':'collapse_'+$index()}" data-toggle="collapse" role="button"></span></h5>
 						</div>
 						<div class="collapse show" data-bind="attr: {'id': 'collapse_'+$index(),'aria-labelledby':'heading_'+$index()}">
 							<ul class="list-group list-group-flush" data-bind="foreach:displayEstablishments">
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xl-10 col-12" id="map"></div>
+			<div class="col-xl-10 col-12 map-canvas" id="map"></div>
 		</div>
 	</div>
 	<footer class="footer">
@@ -60,13 +60,13 @@
 	</script>
 	<script src="js/bootstrap.bundle.js">
 	</script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8&v=3&callback=app.initMap">
-	</script>
 	<script src="js/map.js">
 	</script>
 	<script src="js/app.js">
 	</script>
 	<script src="js/offcanvas.js">
+	</script>
+	<script async defer onerror="app.initFail()" src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8&v=3&callback=app.initMap">
 	</script>
 </body>
 </html>

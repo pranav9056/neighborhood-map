@@ -13,8 +13,9 @@ A liver version of the project can be found [here](http://pranavjain.info/neighb
 1. Clone the repository
 2. This Project uses Grunt as a task runner,If you are not familiar with grunt, you can read more about it [here](https://gruntjs.com/getting-started). Make sure you have grunt-cli and npm installed
 3. Run 'npm install' and all the dependencies will get downloaded
-4. use 'grunt' to run the task runner.
-5. To serve your files you may use http-server from Node in the following way
+4. Install Grunt to locally by using - 'npm install grunt --save-dev'
+5. use 'grunt' to run the task runner.
+6. To serve your files you may use http-server from Node in the following way
     - Run npm install -g http-server.
     - Serve files with http-server ~/Documents/mysite -p 8000 (replace ~/Documents/mysite with the path to your project's directory!).
     - Navigate your browser to http://localhost:8000 to test!
@@ -25,8 +26,6 @@ A liver version of the project can be found [here](http://pranavjain.info/neighb
 2. Bootstrap 4
 3. Jquery
 4. [Knockout.js (MVVM Framework)](http://knockoutjs.com/)
-5. [Foursquare API](https://developer.foursquare.com/) 
+5. [Foursquare API](https://developer.foursquare.com/)
 6. Google Maps API
 7. Grunt
-
-

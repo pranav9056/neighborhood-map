@@ -1,28 +1,20 @@
-var app = app || {}
-// Unused function that uses get latlnf from an address
-function getLatLngFromAdd(add) {
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?address=%data%&key=AIzaSyBWj-fxuvnZLhzSIy2Zov-ztfJjMH9kvV8";
-	url = url.replace("%data%", add);
-	$.getJSON(url, function(data) {
-		console.log(ds);
-	});
-}
+var app = app || {};
 (function() {
 	app.getPlaces = function(category) {
 		var options = {
 			location: app.position,
 			radius: '1000',
 			type: category
-		}
+		};
 		app.service.nearbySearch(options, function(results, status) {
 			// new way of handling incoming data
 			app.viewModelObject.addNewCategory(results, status, category[0]);
 		});
-	}
+	};
 	app.houseMarkerSetWindow = function() {
 		app.infoWindow.setContent('Home:' + app.homeAdd);
 		app.infoWindow.open(app.map, app.houseMarker);
-	}
+	};
 	// callback when Google Maps API is loaded
 	app.initMap = function() {
 		// initialization of variables required to load the map
@@ -54,5 +46,9 @@ function getLatLngFromAdd(add) {
 		app.categories.forEach(function(category) {
 			app.getPlaces([category]);
 		});
+	};
+	app.initFail = function() {
+		app.mapDiv = document.getElementById('map');
+		alert("Google Maps could not load");
 	};
 })();

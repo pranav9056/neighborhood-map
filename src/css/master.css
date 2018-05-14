@@ -1,25 +1,28 @@
 body {
-	height: 100%;
-	width: 100%;
-	position: absolute;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
+
 .ff {
-	overflow-y: auto;
+  overflow-y: auto;
 }
-#map {
-	top: 56px;
+
+.map-canvas {
+  top: 56px;
 }
 /*offcanvas*/
 
-html, body {
-	overflow-x: hidden;
-	/* Prevent scroll on narrow devices */
+html,
+body {
+  overflow-x: hidden;
+  /* Prevent scroll on narrow devices */
 }
 .footer {
-	margin-top: 56px;
+  margin-top: 56px;
 }
 .offcanvas-collapse {
-	top: 56px;
-	/* Height of navbar */
-	overflow-y: auto;
+  top: 56px;
+  /* Height of navbar */
+  overflow-y: auto;
 }
