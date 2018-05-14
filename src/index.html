@@ -45,7 +45,7 @@
 
   <div class="container-fluid h-100">
     <div class="row h-100">
-      <div class="offcanvas-collapse col-xl-3 col-sm-3 col-12 d-none d-xl-flex p-0 bg-dark">
+      <div class="offcanvas-collapse col-xl-2 col-sm-3 col-12 d-none d-xl-flex p-0 bg-dark">
         <div class="accordion w-100" id="accordionExample" data-bind="foreach: displayCategories">
           <div class="card bg-dark">
             <div class="card-header" data-bind="attr: {'id': 'heading_'+$index()}">
@@ -56,16 +56,16 @@
             </div>
 
             <div  data-bind="attr: {'id': 'collapse_'+$index(),'aria-labelledby':'heading_'+$index()}"  class="collapse" data-parent="#accordionExample">
-                <ul class="list-group list-group-flush" data-bind="foreach:displayEstablishments">
-                  <li data-bind="text:$data.name,click:populateInfoWindow" class="list-group-item bg-dark text-light"></li>
-                </ul>
+              <ul class="list-group list-group-flush" data-bind="foreach:displayEstablishments">
+                <li data-bind="text:$data.name,click:populateInfoWindow" class="list-group-item bg-dark text-light"></li>
+              </ul>
 
             </div>
           </div>
         </div>
 
       </div>
-      <div class="col-xl-9  col-12" id="map">
+      <div class="col-xl-10  col-12" id="map">
 
 
       </div>

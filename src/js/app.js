@@ -7,7 +7,7 @@ var app = app || {};
 
 (function(){
 
-  // Create a new object for each place near the Neighborhood which manages properties of the ,
+  // Create a new object for each place near the Neighborhood
   var Establishment = function(data){
     this.name = data.name;
     this.address = data.vicinity;
@@ -23,7 +23,7 @@ var app = app || {};
       title: this.name,
     };
     this.marker = new google.maps.Marker(options);
-    // add event listener to the marker later !
+    // add event listener to the marker for populating info window
     this.marker.addListener('click', function() {
       self.populateInfoWindow();
     });
@@ -42,6 +42,17 @@ var app = app || {};
       this.hideMarker();
     }
   }
+  Establishment.prototype.useGoogleData = function(){
+    var self = this;
+    if(self.address != undefined){
+      $('#address').html('<i class="fas fa-location-arrow"></i>  '+self.address);
+    }
+    if(self.ratingGoogle != undefined){
+      $('#rating').html('<i class="far fa-star"></i>  ' +self.ratingGoogle+"/5") ;
+    }
+    $('.gdata').toggleClass('d-none');
+
+  }
   Establishment.prototype.populateInfoWindow = function(data,clickEvent){
     var self = this;
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -49,7 +60,6 @@ var app = app || {};
       self.marker.setAnimation(null);
     },1000);
     if (app.infoWindow.marker != self.marker){
-      //
       app.infoWindow.setContent('');
       app.infoWindow.marker = self.marker;
       app.infoWindow.addListener('closeclick', function() {
@@ -59,20 +69,18 @@ var app = app || {};
       // ajax requests
       var clientID = "XG52FAWOMRPKNTOYZSQ4QNPVLTKDOGZDJQR0ROEX0LELNDMQ";
       var clientSecret = "3Z5ZEE44NI5JOPG5A5SPKRBSTTBYRVO4AU4QRY1YYVAFRWY4";
-      var content = '<div><div id="name">'+self.name+'</div><div id="rating"></div><div id="address"></div><div id="phone"></div><div id="hours"></div><div id="url"></div></div>';
+      var content = '<div><div id="name">'+self.name+'</div><div id="rating"></div><div id="address"></div><div id="phone"></div><div id="hours"></div><div id="url"></div><div class="d-none gdata text-muted"><br>Unable to load data from Foursquare<div></div>';
       app.infoWindow.setContent(content);
       var url = "https://api.foursquare.com/v2/venues/search?v=20180512&ll=";
       url = url + self.position.lat() + "," + self.position.lng();
       url = url +"&intent=match&name=" + self.name;
       url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
       $.getJSON(url,function(data){
-        console.log(data);
         if(data.meta.code == 200 && data.response.venues.length >0){
           self.foursquareId = data.response.venues[0].id;
           var url = "https://api.foursquare.com/v2/venues/"+self.foursquareId+"?v=20180512&";
           url = url +"&client_id=" + clientID + "&client_secret=" + clientSecret;
           $.getJSON(url,function(data){
-            console.log(data);
             var venue = data.response.venue;
             $('#address').html('<i class="fas fa-location-arrow"></i>  '+venue.location.formattedAddress[0]);
             if(venue.contact.formattedPhone != undefined){
@@ -87,16 +95,15 @@ var app = app || {};
             if(venue.url != undefined){
               $('#url').html('<i class="fas fa-external-link-square-alt"></i> '+ '<a target="_new" href="'+venue.url+'">'+venue.url+'</a>');
             }
+          }).fail(function(){
+            self.useGoogleData();
           });
         }
         else{
-          if(self.vicinity != undefined){
-            $('#address').html('<i class="fas fa-location-arrow"></i>  '+self.vicinity);
-          }
-          if(self.rating != undefined){
-            $('#rating').html('<i class="far fa-star"></i>  ' +self.rating+"/5") ;
-          }
+          self.useGoogleData();
         }
+      }).fail(function(){
+        self.useGoogleData()
       });
 
       app.infoWindow.open(app.map, self.marker);
@@ -155,9 +162,9 @@ var app = app || {};
       self.categoryObjects.push(newCategory);
       self.displayCategories.push(newCategory);
     }
-    // handle case of failure later
+    // send out an alert in case of failure to obtain places
     else{
-
+      alert('Unable to load data for '+category);
     }
   }
 

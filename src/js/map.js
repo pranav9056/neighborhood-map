@@ -14,13 +14,12 @@ function getLatLngFromAdd(add){
       type: category
     }
     app.service.nearbySearch(options,function(results,status){
-      // old way of handling incoming data
-    //  app.viewModelObject.loadPlaces(results,status,category[0]);
       // new way of handling incoming data
       app.viewModelObject.addNewCategory(results,status,category[0]);
     });
 
   }
+
 
   app.initMap = function(){
 
