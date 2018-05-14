@@ -41,13 +41,19 @@ var app = app || {};
 	// Fallback Method that populates infoWindow in case of error from foursquare api
 	Establishment.prototype.useGoogleData = function() {
 		var self = this;
+    var content = '<div><div id="name">' + self.name + '</div>';
+    var rating = '<div id="rating">%rating%</div>';
+    var address = '<div id="address">%address%</div>';
+    var end = '<div class="text-muted"><br>Unable to load data from Foursquare<div></div>';
+    if (self.ratingGoogle != undefined) {
+      content = content + rating.replace("%rating%",'<i class="far fa-star"></i>  ' + self.ratingGoogle + "/5");
+    }
 		if (self.address != undefined) {
-			$('#address').html('<i class="fas fa-location-arrow"></i>  ' + self.address);
+			content = content + address.replace("%address%",'<i class="fas fa-location-arrow"></i>  ' + self.address);
 		}
-		if (self.ratingGoogle != undefined) {
-			$('#rating').html('<i class="far fa-star"></i>  ' + self.ratingGoogle + "/5");
-		}
-		$('.gdata').toggleClass('d-none');
+    app.infoWindow.setContent(content+end);
+    app.infoWindow.open(app.map, self.marker);
+
 	}
 	// fetches content from foursquare and populates infoWindow
 	Establishment.prototype.populateInfoWindow = function(data, clickEvent) {
@@ -67,8 +73,6 @@ var app = app || {};
 			// ajax requests
 			var clientID = "XG52FAWOMRPKNTOYZSQ4QNPVLTKDOGZDJQR0ROEX0LELNDMQ";
 			var clientSecret = "3Z5ZEE44NI5JOPG5A5SPKRBSTTBYRVO4AU4QRY1YYVAFRWY4";
-			var content = '<div><div id="name">' + self.name + '</div><div id="rating"></div><div id="address"></div><div id="phone"></div><div id="hours"></div><div id="url"></div><div class="d-none gdata text-muted"><br>Unable to load data from Foursquare<div></div>';
-			app.infoWindow.setContent(content);
 			var url = "https://api.foursquare.com/v2/venues/search?v=20180512&ll=";
 			url = url + self.position.lat() + "," + self.position.lng();
 			url = url + "&intent=match&name=" + self.name;
@@ -79,20 +83,29 @@ var app = app || {};
 					var url = "https://api.foursquare.com/v2/venues/" + self.foursquareId + "?v=20180512&";
 					url = url + "&client_id=" + clientID + "&client_secret=" + clientSecret;
 					$.getJSON(url, function(data) {
+            var content = '<div><div id="name">' + self.name + '</div>';
+            var rating = '<div id="rating">%rating%</div>';
+            var address = '<div id="address">%address%</div>';
+            var phone = '<div id="phone">%phone%</div>';
+            var hours = '<div id="hours">%hours%</div>';
+            var url = '<div id="url">%url%</div>'
+            var end = '</div>';
 						var venue = data.response.venue;
-						$("#address").html("<i class='fas fa-location-arrow'></i>" + venue.location.formattedAddress[0]);
+            if (venue.rating != undefined) {
+              content = content + rating.replace("%rating%",'<i class="far fa-star"></i>  ' + venue.rating + "/10" + "    " + '<i class="far fa-thumbs-up"></i>  ' + venue.likes.count);
+            }
+						content = content + address.replace("%address%","<i class='fas fa-location-arrow'></i>  " + venue.location.formattedAddress[0]);
 						if (venue.contact.formattedPhone != undefined) {
-							$('#phone').html('<i class="fas fa-phone"></i>  ' + venue.contact.formattedPhone);
-						}
-						if (venue.rating != undefined) {
-							$('#rating').html('<i class="far fa-star"></i>  ' + venue.rating + "/10" + "    " + '<i class="far fa-thumbs-up"></i>  ' + venue.likes.count);
+							content = content + phone.replace("%phone%",'<i class="fas fa-phone"></i>  ' + venue.contact.formattedPhone);
 						}
 						if (venue.hours != undefined) {
-							$('#hours').html('<i class="fas fa-clock"></i>  ' + venue.hours.status)
+							content = content + hours.replace("%hours%",'<i class="fas fa-clock"></i>  ' + venue.hours.status)
 						}
 						if (venue.url != undefined) {
-							$('#url').html('<i class="fas fa-external-link-square-alt"></i> ' + '<a target="_new" href="' + venue.url + '">' + venue.url + '</a>');
+							content = content + url.replace("%url%",'<i class="fas fa-external-link-square-alt"></i> ' + '<a target="_new" href="' + venue.url + '">' + venue.url + '</a>');
 						}
+            app.infoWindow.setContent(content+end);
+            app.infoWindow.open(app.map, self.marker);
 					}).fail(function() {
 						self.useGoogleData();
 					});
@@ -102,7 +115,6 @@ var app = app || {};
 			}).fail(function() {
 				self.useGoogleData()
 			});
-			app.infoWindow.open(app.map, self.marker);
 		}
 	}
 	// CategoryType object - to store establishments belonging to a particular category
