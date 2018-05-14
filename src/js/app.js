@@ -1,10 +1,6 @@
 var app = app || {};
 
 
-
-//app.homeAdd = "1215 Broadway Astoria";
-//var position = {lat:40.7668153 ,lng:-73.9341451};
-
 (function(){
 
   // Create a new object for each place near the Neighborhood
@@ -15,6 +11,7 @@ var app = app || {};
     this.position = data.geometry.location;
     this.ratingGoogle = data.rating;
   }
+  // function to create marker for a location and add on click listeners
   Establishment.prototype.createMarker = function(){
     var self = this;
     var options = {
@@ -28,12 +25,15 @@ var app = app || {};
       self.populateInfoWindow();
     });
   }
+  // to make marker visible on map
   Establishment.prototype.showMarker = function(){
     this.marker.setMap(app.map);
   }
+  // to hide marker from map
   Establishment.prototype.hideMarker = function(){
     this.marker.setMap(null);
   }
+  // to toggle marker visibility
   Establishment.prototype.toggleMarker = function(){
     if (this.marker.getMap()==null){
       this.showMarker();
@@ -42,6 +42,7 @@ var app = app || {};
       this.hideMarker();
     }
   }
+  // Fallback Method that populates infoWindow in case of error from foursquare api
   Establishment.prototype.useGoogleData = function(){
     var self = this;
     if(self.address != undefined){
@@ -51,10 +52,14 @@ var app = app || {};
       $('#rating').html('<i class="far fa-star"></i>  ' +self.ratingGoogle+"/5") ;
     }
     $('.gdata').toggleClass('d-none');
+    app.infoWindow.open(app.map, self.marker);
+
 
   }
+  // fetches content from foursquare and populates infoWindow
   Establishment.prototype.populateInfoWindow = function(data,clickEvent){
     var self = this;
+    // animation on selecting a marker
     self.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){
       self.marker.setAnimation(null);
@@ -95,6 +100,7 @@ var app = app || {};
             if(venue.url != undefined){
               $('#url').html('<i class="fas fa-external-link-square-alt"></i> '+ '<a target="_new" href="'+venue.url+'">'+venue.url+'</a>');
             }
+            app.infoWindow.open(app.map, self.marker);
           }).fail(function(){
             self.useGoogleData();
           });
@@ -106,11 +112,10 @@ var app = app || {};
         self.useGoogleData()
       });
 
-      app.infoWindow.open(app.map, self.marker);
 
     }
   }
-  //
+  // CategoryType object - to store establishments belonging to a particular category
   var CategoryType = function(category,results){
     var self = this;
     this.category = category;
@@ -134,10 +139,6 @@ var app = app || {};
     var self = this;
     self.homeAdd = ko.observable("1215 Broadway Astoria");
 
-    // modified view model starts from here
-    // figure out how to store categries
-    // may want to remove categories
-    self.categories = ko.observableArray();
     self.categoryObjects = ko.observableArray();
     self.displayCategories = ko.observableArray();
 
@@ -158,7 +159,6 @@ var app = app || {};
     // Check If Information is recieved properly
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       var newCategory = new CategoryType(category,results);
-      self.categories.push(category);
       self.categoryObjects.push(newCategory);
       self.displayCategories.push(newCategory);
     }
@@ -168,7 +168,7 @@ var app = app || {};
     }
   }
 
-
+  // creat a viewModel object and apply knockout bindings
   app.viewModelObject = new app.viewModel()
   ko.applyBindings(app.viewModelObject);
 
